@@ -1,361 +1,599 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Fake News Detector</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
+    :root {
+      --bg:        #080c14;
+      --surface:   #0e1520;
+      --border:    #1c2a3a;
+      --accent:    #3b82f6;
+      --real:      #22c55e;
+      --fake:      #ef4444;
+      --warn:      #f59e0b;
+      --text:      #e2e8f0;
+      --muted:     #64748b;
+      --subtle:    #1e2d3d;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #0f172a;
-      color: #e2e8f0;
+      font-family: 'Syne', sans-serif;
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
+      padding: 48px 20px 80px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 40px 20px;
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 36px;
+    /* Ambient background glow */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 800px; height: 500px;
+      background: radial-gradient(ellipse, rgba(59,130,246,0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
     }
-    header h1 {
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: #f8fafc;
+
+    .wrap { width: 100%; max-width: 760px; position: relative; z-index: 1; }
+
+    /* ── Header ── */
+    header { text-align: center; margin-bottom: 48px; }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
     }
-    header h1 span { color: #6366f1; }
+    .logo-icon {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 0 24px rgba(59,130,246,0.3);
+    }
+    .logo-text { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
+    .logo-text span { color: var(--accent); }
+
     header p {
-      color: #94a3b8;
-      margin-top: 8px;
-      font-size: 0.95rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-family: 'DM Mono', monospace;
     }
 
+    /* ── Cards ── */
     .card {
-      background: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
       padding: 28px;
-      width: 100%;
-      max-width: 720px;
-      margin-bottom: 24px;
-    }
-
-    textarea {
-      width: 100%;
-      height: 160px;
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 10px;
-      color: #e2e8f0;
-      font-size: 0.95rem;
-      padding: 14px;
-      resize: vertical;
-      outline: none;
-      transition: border 0.2s;
-    }
-    textarea:focus { border-color: #6366f1; }
-    textarea::placeholder { color: #475569; }
-
-    .btn-row {
-      display: flex;
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    button {
-      padding: 12px 24px;
-      border: none;
-      border-radius: 10px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: opacity 0.2s;
-    }
-    button:hover { opacity: 0.88; }
-
-    #analyzeBtn {
-      background: #6366f1;
-      color: #fff;
-      flex: 1;
-    }
-    #clearBtn {
-      background: #334155;
-      color: #94a3b8;
-    }
-
-    /* Result */
-    #result { display: none; }
-
-    .verdict {
-      display: flex;
-      align-items: center;
-      gap: 16px;
       margin-bottom: 20px;
+      transition: border-color 0.3s;
     }
-    .verdict-badge {
-      font-size: 1.5rem;
-      font-weight: 800;
-      padding: 10px 24px;
-      border-radius: 50px;
-    }
-    .badge-real { background: #14532d; color: #4ade80; }
-    .badge-fake { background: #450a0a; color: #f87171; }
+    .card:hover { border-color: #2a3f55; }
 
-    .confidence-bar-wrap {
-      flex: 1;
-    }
-    .confidence-label {
-      font-size: 0.8rem;
-      color: #94a3b8;
-      margin-bottom: 6px;
-    }
-    .confidence-bar {
-      height: 10px;
-      background: #334155;
-      border-radius: 99px;
-      overflow: hidden;
-    }
-    .confidence-fill {
-      height: 100%;
-      border-radius: 99px;
-      transition: width 0.8s ease;
-    }
-    .fill-real { background: #4ade80; }
-    .fill-fake { background: #f87171; }
-
-    .reasons-title {
-      font-size: 0.8rem;
+    .card-label {
+      font-size: 0.7rem;
+      font-family: 'DM Mono', monospace;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #64748b;
-      margin-bottom: 10px;
-    }
-    .reason-tag {
-      display: inline-block;
-      background: #0f172a;
-      border: 1px solid #334155;
-      border-radius: 6px;
-      padding: 5px 12px;
-      font-size: 0.82rem;
-      color: #94a3b8;
-      margin: 4px 4px 4px 0;
-    }
-
-    /* History */
-    .history-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      letter-spacing: 0.12em;
+      color: var(--muted);
       margin-bottom: 14px;
     }
-    .history-header h3 { font-size: 1rem; color: #94a3b8; }
-    #clearHistoryBtn {
+
+    /* ── Textarea ── */
+    textarea {
+      width: 100%;
+      height: 150px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.88rem;
+      padding: 16px;
+      resize: vertical;
+      outline: none;
+      line-height: 1.6;
+      transition: border-color 0.2s;
+    }
+    textarea:focus { border-color: var(--accent); }
+    textarea::placeholder { color: #2a3f55; }
+
+    .btn-row { display: flex; gap: 10px; margin-top: 14px; }
+
+    .btn-primary {
+      flex: 1;
+      padding: 14px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .btn-primary:hover { background: #2563eb; transform: translateY(-1px); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .btn-ghost {
+      padding: 14px 20px;
       background: transparent;
-      border: 1px solid #334155;
-      color: #64748b;
-      font-size: 0.78rem;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-ghost:hover { border-color: #2a3f55; color: var(--text); }
+
+    .error-msg {
+      color: var(--fake);
+      font-size: 0.82rem;
+      font-family: 'DM Mono', monospace;
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* ── Result Card ── */
+    #resultCard { display: none; }
+
+    .result-top {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 28px;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    /* Gauge */
+    .gauge-wrap { position: relative; width: 140px; height: 80px; flex-shrink: 0; }
+    .gauge-wrap svg { overflow: visible; }
+
+    .gauge-track {
+      fill: none;
+      stroke: var(--subtle);
+      stroke-width: 12;
+      stroke-linecap: round;
+    }
+    .gauge-fill {
+      fill: none;
+      stroke-width: 12;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1s cubic-bezier(.4,0,.2,1), stroke 0.5s;
+    }
+    .gauge-needle {
+      transform-origin: 70px 70px;
+      transition: transform 1s cubic-bezier(.4,0,.2,1);
+    }
+    .gauge-pct {
+      position: absolute;
+      bottom: -4px; left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.4rem;
+      font-weight: 800;
+      font-family: 'DM Mono', monospace;
+    }
+    .gauge-sublabel {
+      position: absolute;
+      bottom: -22px; left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.65rem;
+      font-family: 'DM Mono', monospace;
+      color: var(--muted);
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .verdict-info { min-width: 0; }
+    .verdict-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      letter-spacing: 0.02em;
+    }
+    .badge-real { background: rgba(34,197,94,0.12); color: var(--real); border: 1px solid rgba(34,197,94,0.25); }
+    .badge-fake { background: rgba(239,68,68,0.12); color: var(--fake); border: 1px solid rgba(239,68,68,0.25); }
+
+    .verdict-sub {
+      font-size: 0.8rem;
+      font-family: 'DM Mono', monospace;
+      color: var(--muted);
+    }
+
+    /* Divider */
+    .divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+    /* Highlighted text */
+    .section-label {
+      font-size: 0.68rem;
+      font-family: 'DM Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .highlighted-text {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 1.8;
+      color: #94a3b8;
+      background: var(--bg);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+    }
+    .highlighted-text mark {
+      background: rgba(239,68,68,0.18);
+      color: #fca5a5;
+      border-radius: 4px;
+      padding: 1px 4px;
+      border-bottom: 1px solid rgba(239,68,68,0.4);
+    }
+
+    /* Reason tags */
+    .reasons-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+    .reason-tag {
+      display: flex;
+      align-items: center;
+      gap: 6px;
       padding: 6px 14px;
       border-radius: 8px;
+      font-size: 0.78rem;
+      font-family: 'DM Mono', monospace;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: #94a3b8;
     }
+    .reason-tag.warn { border-color: rgba(245,158,11,0.3); color: #fbbf24; background: rgba(245,158,11,0.05); }
+    .reason-tag.good { border-color: rgba(34,197,94,0.3); color: #4ade80; background: rgba(34,197,94,0.05); }
 
-    .history-list { display: flex; flex-direction: column; gap: 10px; }
-
-    .history-item {
-      background: #0f172a;
-      border: 1px solid #1e293b;
-      border-radius: 10px;
-      padding: 12px 16px;
+    /* ── History ── */
+    .history-head {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
     }
-    .history-text {
-      font-size: 0.85rem;
-      color: #cbd5e1;
+    .history-head h3 {
+      font-size: 0.75rem;
+      font-family: 'DM Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+
+    .history-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .history-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: border-color 0.2s;
+      cursor: default;
+    }
+    .history-item:hover { border-color: #2a3f55; }
+
+    .h-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .h-dot.real { background: var(--real); box-shadow: 0 0 6px var(--real); }
+    .h-dot.fake { background: var(--fake); box-shadow: 0 0 6px var(--fake); }
+
+    .h-text {
       flex: 1;
+      font-size: 0.82rem;
+      font-family: 'DM Mono', monospace;
+      color: #64748b;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    .history-meta {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+
+    .h-conf {
+      font-size: 0.75rem;
+      font-family: 'DM Mono', monospace;
+      color: var(--muted);
       flex-shrink: 0;
     }
-    .mini-badge {
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 99px;
-    }
-    .mini-real { background: #14532d; color: #4ade80; }
-    .mini-fake { background: #450a0a; color: #f87171; }
-    .history-conf { font-size: 0.78rem; color: #64748b; }
 
-    .loading { text-align: center; padding: 20px; color: #6366f1; font-size: 0.95rem; }
-
-    #error-msg {
-      color: #f87171;
-      font-size: 0.88rem;
-      margin-top: 10px;
-      display: none;
+    .empty-state {
+      text-align: center;
+      padding: 24px;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.82rem;
     }
+
+    /* Loading spinner */
+    .spinner {
+      display: inline-block;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Fade in */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.4s ease forwards; }
   </style>
 </head>
 <body>
+<div class="wrap">
 
   <header>
-    <h1>Fake News <span>Detector</span></h1>
-    <p>Paste a headline or article — our ML model will analyze it instantly.</p>
+    <div class="logo">
+      <div class="logo-icon">🔍</div>
+      <div class="logo-text">Verify<span>AI</span></div>
+    </div>
+    <p>// NLP-powered fake news detection engine</p>
   </header>
 
-  <!-- Input Card -->
+  <!-- Input -->
   <div class="card">
-    <textarea id="newsInput" placeholder="Paste a news headline or article here..."></textarea>
+    <div class="card-label">// paste article or headline</div>
+    <textarea id="newsInput" placeholder="Enter a news headline or article text..."></textarea>
     <div class="btn-row">
-      <button id="analyzeBtn" onclick="analyze()">🔍 Analyze</button>
-      <button id="clearBtn" onclick="clearInput()">Clear</button>
+      <button class="btn-primary" id="analyzeBtn" onclick="analyze()">Analyze</button>
+      <button class="btn-ghost" onclick="clearAll()">Clear</button>
     </div>
-    <div id="error-msg"></div>
+    <div class="error-msg" id="errorMsg"></div>
   </div>
 
-  <!-- Result Card -->
-  <div class="card" id="result">
-    <div class="verdict">
-      <div class="verdict-badge" id="verdictBadge">—</div>
-      <div class="confidence-bar-wrap">
-        <div class="confidence-label" id="confLabel">Confidence: —</div>
-        <div class="confidence-bar">
-          <div class="confidence-fill" id="confFill" style="width:0%"></div>
-        </div>
+  <!-- Result -->
+  <div class="card" id="resultCard">
+    <div class="card-label">// analysis result</div>
+
+    <div class="result-top">
+      <!-- Gauge -->
+      <div class="gauge-wrap">
+        <svg viewBox="0 0 140 80" width="140" height="80">
+          <!-- Track: semicircle from 180° to 0° -->
+          <path class="gauge-track"
+            d="M 15,70 A 55,55 0 0,1 125,70"
+            stroke-dasharray="173" stroke-dashoffset="0"/>
+          <!-- Fill -->
+          <path class="gauge-fill" id="gaugeFill"
+            d="M 15,70 A 55,55 0 0,1 125,70"
+            stroke-dasharray="173" stroke-dashoffset="173"/>
+          <!-- Needle -->
+          <g class="gauge-needle" id="gaugeNeedle">
+            <line x1="70" y1="70" x2="70" y2="24"
+              stroke="#e2e8f0" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="70" cy="70" r="5" fill="#e2e8f0"/>
+          </g>
+        </svg>
+        <div class="gauge-pct" id="gaugePct">0%</div>
+        <div class="gauge-sublabel">confidence</div>
+      </div>
+
+      <!-- Verdict -->
+      <div class="verdict-info">
+        <div class="verdict-badge" id="verdictBadge">—</div>
+        <div class="verdict-sub" id="verdictSub">—</div>
       </div>
     </div>
-    <div class="reasons-title">Analysis Details</div>
-    <div id="reasonTags"></div>
+
+    <div class="divider"></div>
+
+    <!-- Highlighted text -->
+    <div class="section-label">// article with flagged words highlighted</div>
+    <div class="highlighted-text" id="highlightedText"></div>
+
+    <!-- Reasons -->
+    <div class="section-label">// detection signals</div>
+    <div class="reasons-grid" id="reasonsGrid"></div>
   </div>
 
-  <!-- History Card -->
-  <div class="card" id="historyCard">
-    <div class="history-header">
-      <h3>Recent Analyses</h3>
-      <button id="clearHistoryBtn" onclick="clearHistory()">Clear History</button>
+  <!-- History -->
+  <div class="card">
+    <div class="history-head">
+      <h3>// recent analyses</h3>
+      <button class="btn-ghost" style="padding:6px 14px;font-size:0.75rem;" onclick="clearHistory()">Clear</button>
     </div>
     <div class="history-list" id="historyList">
-      <div class="loading">Loading history...</div>
+      <div class="empty-state">No analyses yet.</div>
     </div>
   </div>
 
-  <script>
-    const API = "http://127.0.0.1:8000";
+</div>
 
-    async function analyze() {
-      const text = document.getElementById("newsInput").value.trim();
-      const errEl = document.getElementById("error-msg");
-      errEl.style.display = "none";
+<script>
+  const API = "http://127.0.0.1:8000";
 
-      if (!text) {
-        errEl.textContent = "Please enter some text first.";
-        errEl.style.display = "block";
+  // ── Gauge animation ──────────────────────────────────────────────────────
+  function animateGauge(pct, isReal) {
+    const total = 173;
+    const fill  = document.getElementById("gaugeFill");
+    const needle = document.getElementById("gaugeNeedle");
+    const pctEl  = document.getElementById("gaugePct");
+
+    const color = isReal ? "#22c55e" : "#ef4444";
+    fill.style.stroke = color;
+
+    const offset = total - (pct / 100) * total;
+    fill.style.strokeDashoffset = offset;
+
+    // Needle: -90deg = 0%, +90deg = 100%
+    const deg = -90 + (pct / 100) * 180;
+    needle.style.transform = `rotate(${deg}deg)`;
+
+    // Count up
+    let cur = 0;
+    const step = pct / 40;
+    const timer = setInterval(() => {
+      cur = Math.min(cur + step, pct);
+      pctEl.textContent = Math.round(cur) + "%";
+      pctEl.style.color = color;
+      if (cur >= pct) clearInterval(timer);
+    }, 25);
+  }
+
+  // ── Highlight suspicious words ───────────────────────────────────────────
+  function highlightText(text, highlights) {
+    if (!highlights || highlights.length === 0) return escapeHtml(text);
+    let result = escapeHtml(text);
+    highlights.forEach(word => {
+      const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex   = new RegExp(`(${escaped})`, 'gi');
+      result = result.replace(regex, '<mark>$1</mark>');
+    });
+    return result;
+  }
+
+  function escapeHtml(text) {
+    return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
+  // ── Analyze ──────────────────────────────────────────────────────────────
+  async function analyze() {
+    const text   = document.getElementById("newsInput").value.trim();
+    const errEl  = document.getElementById("errorMsg");
+    errEl.style.display = "none";
+
+    if (!text) {
+      errEl.textContent = "Please enter some text first.";
+      errEl.style.display = "block";
+      return;
+    }
+
+    const btn = document.getElementById("analyzeBtn");
+    btn.innerHTML = '<span class="spinner"></span>Analyzing...';
+    btn.disabled  = true;
+
+    try {
+      const res  = await fetch(`${API}/predict`, {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ text })
+      });
+      const data = await res.json();
+      if (data.error) { errEl.textContent = data.error; errEl.style.display = "block"; return; }
+
+      showResult(data, text);
+      loadHistory();
+    } catch {
+      errEl.textContent = "Cannot connect to backend. Is 'uvicorn' running?";
+      errEl.style.display = "block";
+    } finally {
+      btn.innerHTML = "Analyze";
+      btn.disabled  = false;
+    }
+  }
+
+  function showResult(data, originalText) {
+    const card = document.getElementById("resultCard");
+    card.style.display = "block";
+    card.classList.remove("fade-up");
+    void card.offsetWidth;
+    card.classList.add("fade-up");
+
+    const isReal = data.label === "Real";
+
+    // Gauge
+    animateGauge(data.confidence, isReal);
+
+    // Badge
+    const badge = document.getElementById("verdictBadge");
+    badge.textContent = isReal ? "✅ Real News" : "🚨 Fake News";
+    badge.className   = "verdict-badge " + (isReal ? "badge-real" : "badge-fake");
+
+    document.getElementById("verdictSub").textContent =
+      `Model confidence: ${data.confidence}% · ${isReal ? "No deception detected" : "Deceptive patterns found"}`;
+
+    // Highlighted text
+    document.getElementById("highlightedText").innerHTML =
+      highlightText(originalText, data.highlights);
+
+    // Reason tags
+    const grid = document.getElementById("reasonsGrid");
+    grid.innerHTML = data.reasons.map(r => {
+      const isGood = r.toLowerCase().includes("neutral") || r.toLowerCase().includes("credible");
+      const cls    = isGood ? "good" : (r.includes("No specific") ? "" : "warn");
+      const icon   = isGood ? "✓" : (r.includes("No specific") ? "·" : "⚑");
+      return `<div class="reason-tag ${cls}">${icon} ${r}</div>`;
+    }).join("");
+
+    card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  // ── History ──────────────────────────────────────────────────────────────
+  async function loadHistory() {
+    try {
+      const res  = await fetch(`${API}/history`);
+      const data = await res.json();
+      const list = document.getElementById("historyList");
+
+      if (!data.length) {
+        list.innerHTML = '<div class="empty-state">No analyses yet.</div>';
         return;
       }
 
-      const btn = document.getElementById("analyzeBtn");
-      btn.textContent = "Analyzing...";
-      btn.disabled = true;
-
-      try {
-        const res  = await fetch(`${API}/predict`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text })
-        });
-        const data = await res.json();
-
-        if (data.error) {
-          errEl.textContent = data.error;
-          errEl.style.display = "block";
-          return;
-        }
-
-        showResult(data);
-        loadHistory();
-      } catch (e) {
-        errEl.textContent = "Could not connect to backend. Is the server running?";
-        errEl.style.display = "block";
-      } finally {
-        btn.textContent = "🔍 Analyze";
-        btn.disabled = false;
-      }
+      list.innerHTML = data.map(h => `
+        <div class="history-item">
+          <div class="h-dot ${h.label === 'Real' ? 'real' : 'fake'}"></div>
+          <div class="h-text">${escapeHtml(h.text)}</div>
+          <div class="h-conf">${h.label} · ${h.confidence}%</div>
+        </div>
+      `).join("");
+    } catch {
+      document.getElementById("historyList").innerHTML =
+        '<div class="empty-state">Backend not connected.</div>';
     }
+  }
 
-    function showResult(data) {
-      const resultEl = document.getElementById("result");
-      resultEl.style.display = "block";
-
-      const badge = document.getElementById("verdictBadge");
-      badge.textContent = data.label === "Real" ? "✅ Real News" : "🚨 Fake News";
-      badge.className = "verdict-badge " + (data.label === "Real" ? "badge-real" : "badge-fake");
-
-      document.getElementById("confLabel").textContent = `Confidence: ${data.confidence}%`;
-
-      const fill = document.getElementById("confFill");
-      fill.className = "confidence-fill " + (data.label === "Real" ? "fill-real" : "fill-fake");
-      setTimeout(() => { fill.style.width = data.confidence + "%"; }, 50);
-
-      const tagsEl = document.getElementById("reasonTags");
-      tagsEl.innerHTML = data.reasons
-        .map(r => `<span class="reason-tag">${r}</span>`)
-        .join("");
-
-      resultEl.scrollIntoView({ behavior: "smooth" });
-    }
-
-    async function loadHistory() {
-      try {
-        const res  = await fetch(`${API}/history`);
-        const data = await res.json();
-        const list = document.getElementById("historyList");
-
-        if (!data.length) {
-          list.innerHTML = `<div style="color:#475569;font-size:0.85rem;text-align:center;padding:16px;">No history yet.</div>`;
-          return;
-        }
-
-        list.innerHTML = data.map(h => `
-          <div class="history-item">
-            <div class="history-text" title="${h.text}">${h.text}</div>
-            <div class="history-meta">
-              <span class="mini-badge ${h.label === 'Real' ? 'mini-real' : 'mini-fake'}">${h.label}</span>
-              <span class="history-conf">${h.confidence}%</span>
-            </div>
-          </div>
-        `).join("");
-      } catch {
-        document.getElementById("historyList").innerHTML =
-          `<div style="color:#475569;font-size:0.85rem;text-align:center;padding:16px;">Backend not connected.</div>`;
-      }
-    }
-
-    async function clearHistory() {
-      await fetch(`${API}/history`, { method: "DELETE" });
-      loadHistory();
-    }
-
-    function clearInput() {
-      document.getElementById("newsInput").value = "";
-      document.getElementById("result").style.display = "none";
-      document.getElementById("error-msg").style.display = "none";
-    }
-
-    // Load history on page open
+  async function clearHistory() {
+    await fetch(`${API}/history`, { method: "DELETE" });
     loadHistory();
-  </script>
+  }
 
+  function clearAll() {
+    document.getElementById("newsInput").value = "";
+    document.getElementById("resultCard").style.display = "none";
+    document.getElementById("errorMsg").style.display   = "none";
+  }
+
+  loadHistory();
+</script>
 </body>
 </html>
