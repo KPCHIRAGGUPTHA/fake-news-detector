@@ -1,0 +1,5 @@
+models/
+__pycache__/
+*.pkl
+backend/history.db
+data/
