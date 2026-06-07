@@ -35,9 +35,9 @@
       background: radial-gradient(ellipse, rgba(59,130,246,0.06) 0%, transparent 70%);
       pointer-events: none; z-index: 0;
     }
-    .wrap { width: 100%; max-width: 760px; position: relative; z-index: 1; }
+    .wrap { width: 100%; max-width: 780px; position: relative; z-index: 1; }
 
-    /* Header */
+    /* ── Header ── */
     header { text-align: center; margin-bottom: 48px; }
     .logo { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 16px; }
     .logo-icon {
@@ -45,219 +45,172 @@
       background: linear-gradient(135deg, #1d4ed8, #3b82f6);
       border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 22px;
-      box-shadow: 0 0 24px rgba(59,130,246,0.3);
+      font-size: 22px; box-shadow: 0 0 24px rgba(59,130,246,0.3);
     }
     .logo-text { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
     .logo-text span { color: var(--accent); }
     header p { color: var(--muted); font-size: 0.9rem; font-family: 'DM Mono', monospace; }
 
-    /* Card */
+    /* ── Cards ── */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 28px;
-      margin-bottom: 20px;
-      transition: border-color 0.3s;
+      border-radius: 20px; padding: 28px;
+      margin-bottom: 20px; transition: border-color 0.3s;
     }
-    .card:hover { border-color: #2a3f55; }
     .card-label {
       font-size: 0.7rem; font-family: 'DM Mono', monospace;
       text-transform: uppercase; letter-spacing: 0.12em;
       color: var(--muted); margin-bottom: 14px;
     }
 
-    /* Tabs */
+    /* ── Tabs ── */
     .tabs {
       display: flex; gap: 4px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 4px;
-      margin-bottom: 16px;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 12px; padding: 4px; margin-bottom: 16px;
     }
     .tab {
-      flex: 1; padding: 10px;
-      border: none; background: transparent;
-      color: var(--muted);
-      font-family: 'Syne', sans-serif;
-      font-size: 0.88rem; font-weight: 600;
-      border-radius: 9px;
-      cursor: pointer;
-      transition: all 0.2s;
+      flex: 1; padding: 10px; border: none; background: transparent;
+      color: var(--muted); font-family: 'Syne', sans-serif;
+      font-size: 0.88rem; font-weight: 600; border-radius: 9px;
+      cursor: pointer; transition: all 0.2s;
     }
-    .tab.active {
-      background: var(--surface);
-      color: var(--text);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
-    }
-
-    /* Input panels */
+    .tab.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
     .panel { display: none; }
     .panel.active { display: block; }
 
     textarea {
-      width: 100%; height: 150px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      color: var(--text);
-      font-family: 'DM Mono', monospace;
-      font-size: 0.88rem;
-      padding: 16px; resize: vertical; outline: none; line-height: 1.6;
-      transition: border-color 0.2s;
+      width: 100%; height: 150px; background: var(--bg);
+      border: 1px solid var(--border); border-radius: 12px;
+      color: var(--text); font-family: 'DM Mono', monospace;
+      font-size: 0.88rem; padding: 16px; resize: vertical; outline: none;
+      line-height: 1.6; transition: border-color 0.2s;
     }
     textarea:focus { border-color: var(--accent); }
     textarea::placeholder { color: #2a3f55; }
 
     .url-input-wrap { position: relative; }
     .url-input {
-      width: 100%;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      color: var(--text);
-      font-family: 'DM Mono', monospace;
-      font-size: 0.88rem;
-      padding: 16px 16px 16px 44px;
-      outline: none;
-      transition: border-color 0.2s;
+      width: 100%; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 12px; color: var(--text); font-family: 'DM Mono', monospace;
+      font-size: 0.88rem; padding: 16px 16px 16px 44px;
+      outline: none; transition: border-color 0.2s;
     }
     .url-input:focus { border-color: var(--accent); }
     .url-input::placeholder { color: #2a3f55; }
-    .url-icon {
-      position: absolute; left: 14px; top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.1rem; pointer-events: none;
-    }
-
-    .url-hint {
-      font-size: 0.75rem; font-family: 'DM Mono', monospace;
-      color: var(--muted); margin-top: 8px;
-    }
+    .url-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 1.1rem; pointer-events: none; }
+    .url-hint { font-size: 0.75rem; font-family: 'DM Mono', monospace; color: var(--muted); margin-top: 8px; }
 
     .btn-row { display: flex; gap: 10px; margin-top: 14px; }
     .btn-primary {
-      flex: 1; padding: 14px;
-      background: var(--accent); color: #fff;
-      border: none; border-radius: 12px;
-      font-family: 'Syne', sans-serif;
-      font-size: 0.95rem; font-weight: 700;
-      cursor: pointer; transition: all 0.2s; letter-spacing: 0.02em;
+      flex: 1; padding: 14px; background: var(--accent); color: #fff;
+      border: none; border-radius: 12px; font-family: 'Syne', sans-serif;
+      font-size: 0.95rem; font-weight: 700; cursor: pointer;
+      transition: all 0.2s; letter-spacing: 0.02em;
     }
     .btn-primary:hover { background: #2563eb; transform: translateY(-1px); }
     .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
     .btn-ghost {
-      padding: 14px 20px;
-      background: transparent; color: var(--muted);
+      padding: 14px 20px; background: transparent; color: var(--muted);
       border: 1px solid var(--border); border-radius: 12px;
       font-family: 'Syne', sans-serif; font-size: 0.88rem;
       cursor: pointer; transition: all 0.2s;
     }
     .btn-ghost:hover { border-color: #2a3f55; color: var(--text); }
+    .error-msg { color: var(--fake); font-size: 0.82rem; font-family: 'DM Mono', monospace; margin-top: 10px; display: none; }
 
-    .error-msg {
-      color: var(--fake); font-size: 0.82rem;
-      font-family: 'DM Mono', monospace;
-      margin-top: 10px; display: none;
-    }
-
-    /* Scrape preview */
-    .scrape-preview {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px 16px;
-      margin-bottom: 16px;
-      display: none;
-    }
-    .scrape-meta {
-      display: flex; align-items: center; gap: 10px;
-      margin-bottom: 8px; flex-wrap: wrap;
-    }
-    .scrape-domain {
-      font-family: 'DM Mono', monospace; font-size: 0.8rem;
-      color: var(--accent);
-    }
-    .trust-badge {
-      font-size: 0.72rem; font-family: 'DM Mono', monospace;
-      padding: 3px 10px; border-radius: 99px; font-weight: 600;
-    }
-    .trust-high    { background: rgba(34,197,94,0.12); color: #4ade80; border: 1px solid rgba(34,197,94,0.25); }
-    .trust-low     { background: rgba(239,68,68,0.12); color: #f87171; border: 1px solid rgba(239,68,68,0.25); }
+    /* ── Scrape Preview ── */
+    .scrape-preview { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; display: none; }
+    .scrape-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+    .scrape-domain { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--accent); }
+    .trust-badge { font-size: 0.72rem; font-family: 'DM Mono', monospace; padding: 3px 10px; border-radius: 99px; font-weight: 600; }
+    .trust-high    { background: rgba(34,197,94,0.12);   color: #4ade80; border: 1px solid rgba(34,197,94,0.25); }
+    .trust-low     { background: rgba(239,68,68,0.12);   color: #f87171; border: 1px solid rgba(239,68,68,0.25); }
     .trust-neutral { background: rgba(100,116,139,0.12); color: #94a3b8; border: 1px solid rgba(100,116,139,0.25); }
-    .trust-satire  { background: rgba(245,158,11,0.12); color: #fbbf24; border: 1px solid rgba(245,158,11,0.25); }
-    .scrape-title {
-      font-size: 0.88rem; color: var(--text);
-      font-weight: 600; line-height: 1.4;
-    }
-    .scrape-chars {
-      font-size: 0.72rem; font-family: 'DM Mono', monospace;
-      color: var(--muted); margin-top: 4px;
-    }
-    .scrape-desc {
-      font-size: 0.75rem; font-family: 'DM Mono', monospace;
-      color: var(--muted); margin-top: 6px; line-height: 1.5;
-    }
-    .mbfc-row {
-      display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;
-    }
-    .mbfc-tag {
-      font-size: 0.68rem; font-family: 'DM Mono', monospace;
-      padding: 3px 10px; border-radius: 6px;
-      border: 1px solid var(--border); color: var(--muted);
-      background: var(--bg);
-    }
-    .mbfc-credit {
-      font-size: 0.65rem; font-family: 'DM Mono', monospace;
-      color: #334155; margin-top: 6px;
-    }
+    .trust-satire  { background: rgba(245,158,11,0.12);  color: #fbbf24; border: 1px solid rgba(245,158,11,0.25); }
+    .scrape-title  { font-size: 0.88rem; color: var(--text); font-weight: 600; line-height: 1.4; }
+    .scrape-chars  { font-size: 0.72rem; font-family: 'DM Mono', monospace; color: var(--muted); margin-top: 4px; }
+    .scrape-desc   { font-size: 0.75rem; font-family: 'DM Mono', monospace; color: var(--muted); margin-top: 6px; }
+    .mbfc-row      { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+    .mbfc-tag      { font-size: 0.68rem; font-family: 'DM Mono', monospace; padding: 3px 10px; border-radius: 6px; border: 1px solid var(--border); color: var(--muted); background: var(--bg); }
+    .mbfc-credit   { font-size: 0.65rem; font-family: 'DM Mono', monospace; color: #334155; margin-top: 6px; }
 
-    /* Result */
+    /* ── Result Card ── */
     #resultCard { display: none; }
-    .result-top {
-      display: grid; grid-template-columns: auto 1fr;
-      gap: 28px; align-items: center; margin-bottom: 28px;
+
+    /* Top verdict row */
+    .verdict-row {
+      display: grid; grid-template-columns: auto 1fr auto;
+      gap: 24px; align-items: center; margin-bottom: 28px;
     }
 
     /* Gauge */
-    .gauge-wrap { position: relative; width: 140px; height: 80px; flex-shrink: 0; }
+    .gauge-wrap { position: relative; width: 130px; height: 75px; flex-shrink: 0; }
     .gauge-wrap svg { overflow: visible; }
-    .gauge-track { fill: none; stroke: var(--subtle); stroke-width: 12; stroke-linecap: round; }
-    .gauge-fill  { fill: none; stroke-width: 12; stroke-linecap: round; transition: stroke-dashoffset 1s cubic-bezier(.4,0,.2,1), stroke 0.5s; }
-    .gauge-needle { transform-origin: 70px 70px; transition: transform 1s cubic-bezier(.4,0,.2,1); }
-    .gauge-pct {
-      position: absolute; bottom: -4px; left: 50%;
-      transform: translateX(-50%);
-      font-size: 1.4rem; font-weight: 800; font-family: 'DM Mono', monospace;
-    }
-    .gauge-sublabel {
-      position: absolute; bottom: -22px; left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.65rem; font-family: 'DM Mono', monospace;
-      color: var(--muted); white-space: nowrap;
-      text-transform: uppercase; letter-spacing: 0.1em;
-    }
+    .gauge-track { fill: none; stroke: var(--subtle); stroke-width: 11; stroke-linecap: round; }
+    .gauge-fill  { fill: none; stroke-width: 11; stroke-linecap: round; transition: stroke-dashoffset 1s cubic-bezier(.4,0,.2,1), stroke 0.5s; }
+    .gauge-needle { transform-origin: 65px 65px; transition: transform 1s cubic-bezier(.4,0,.2,1); }
+    .gauge-pct { position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); font-size: 1.3rem; font-weight: 800; font-family: 'DM Mono', monospace; }
+    .gauge-sub { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 0.6rem; font-family: 'DM Mono', monospace; color: var(--muted); white-space: nowrap; text-transform: uppercase; letter-spacing: 0.1em; }
 
-    .verdict-info { min-width: 0; }
-    .verdict-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 8px 20px; border-radius: 50px;
-      font-size: 1.1rem; font-weight: 800;
-      margin-bottom: 10px; letter-spacing: 0.02em;
-    }
+    .verdict-center { min-width: 0; }
+    .verdict-badge  { display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; border-radius: 50px; font-size: 1.05rem; font-weight: 800; margin-bottom: 8px; }
     .badge-real { background: rgba(34,197,94,0.12); color: var(--real); border: 1px solid rgba(34,197,94,0.25); }
     .badge-fake { background: rgba(239,68,68,0.12); color: var(--fake); border: 1px solid rgba(239,68,68,0.25); }
-    .verdict-sub { font-size: 0.8rem; font-family: 'DM Mono', monospace; color: var(--muted); }
+    .badge-warn { background: rgba(245,158,11,0.12); color: var(--warn); border: 1px solid rgba(245,158,11,0.25); }
+    .verdict-sub { font-size: 0.78rem; font-family: 'DM Mono', monospace; color: var(--muted); }
 
-    .divider { height: 1px; background: var(--border); margin: 20px 0; }
-    .section-label {
-      font-size: 0.68rem; font-family: 'DM Mono', monospace;
-      text-transform: uppercase; letter-spacing: 0.12em;
-      color: var(--muted); margin-bottom: 10px;
+    /* Overall credibility score (right side) */
+    .overall-score-wrap { text-align: center; flex-shrink: 0; }
+    .overall-score-ring { position: relative; width: 80px; height: 80px; margin: 0 auto 6px; }
+    .overall-score-ring svg { transform: rotate(-90deg); }
+    .ring-track { fill: none; stroke: var(--subtle); stroke-width: 7; }
+    .ring-fill  { fill: none; stroke-width: 7; stroke-linecap: round; transition: stroke-dasharray 1.2s cubic-bezier(.4,0,.2,1), stroke 0.5s; }
+    .overall-score-num {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.2rem; font-weight: 800; font-family: 'DM Mono', monospace;
     }
+    .overall-label { font-size: 0.65rem; font-family: 'DM Mono', monospace; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+    .overall-verdict { font-size: 0.75rem; font-weight: 700; margin-top: 3px; }
 
+    .divider { height: 1px; background: var(--border); margin: 22px 0; }
+    .section-label { font-size: 0.68rem; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 12px; }
+
+    /* ── Credibility Score Breakdown ── */
+    .cred-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+
+    .cred-row {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 12px; padding: 14px 16px;
+      transition: border-color 0.2s;
+    }
+    .cred-row:hover { border-color: #2a3f55; }
+
+    .cred-top { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .cred-icon { font-size: 1rem; flex-shrink: 0; width: 24px; text-align: center; }
+    .cred-name { font-size: 0.82rem; font-weight: 700; flex: 1; }
+    .cred-score-badge {
+      font-size: 0.8rem; font-weight: 800; font-family: 'DM Mono', monospace;
+      padding: 3px 10px; border-radius: 8px; flex-shrink: 0;
+    }
+    .score-high { background: rgba(34,197,94,0.15);  color: #4ade80; }
+    .score-mid  { background: rgba(245,158,11,0.15); color: #fbbf24; }
+    .score-low  { background: rgba(239,68,68,0.15);  color: #f87171; }
+
+    .cred-bar-wrap { height: 6px; background: var(--subtle); border-radius: 99px; overflow: hidden; margin-bottom: 6px; }
+    .cred-bar-fill { height: 100%; border-radius: 99px; transition: width 1s cubic-bezier(.4,0,.2,1); }
+    .bar-high { background: var(--real); }
+    .bar-mid  { background: var(--warn); }
+    .bar-low  { background: var(--fake); }
+
+    .cred-desc  { font-size: 0.72rem; font-family: 'DM Mono', monospace; color: #475569; margin-bottom: 6px; }
+    .cred-flags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .cred-flag  { font-size: 0.7rem; font-family: 'DM Mono', monospace; padding: 3px 10px; border-radius: 6px; background: rgba(239,68,68,0.08); color: #f87171; border: 1px solid rgba(239,68,68,0.15); }
+    .cred-flag.good { background: rgba(34,197,94,0.08); color: #4ade80; border-color: rgba(34,197,94,0.15); }
+
+    /* ── Highlighted Text ── */
     .highlighted-text {
       font-family: 'DM Mono', monospace; font-size: 0.85rem;
       line-height: 1.8; color: #94a3b8;
@@ -265,53 +218,31 @@
       padding: 14px 16px; margin-bottom: 20px;
       max-height: 200px; overflow-y: auto;
     }
-    .highlighted-text mark {
-      background: rgba(239,68,68,0.18); color: #fca5a5;
-      border-radius: 4px; padding: 1px 4px;
-      border-bottom: 1px solid rgba(239,68,68,0.4);
-    }
+    .highlighted-text mark { background: rgba(239,68,68,0.18); color: #fca5a5; border-radius: 4px; padding: 1px 4px; border-bottom: 1px solid rgba(239,68,68,0.4); }
 
+    /* ── Reason Tags ── */
     .reasons-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-    .reason-tag {
-      display: flex; align-items: center; gap: 6px;
-      padding: 6px 14px; border-radius: 8px;
-      font-size: 0.78rem; font-family: 'DM Mono', monospace;
-      border: 1px solid var(--border);
-      background: var(--bg); color: #94a3b8;
-    }
+    .reason-tag { display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 8px; font-size: 0.78rem; font-family: 'DM Mono', monospace; border: 1px solid var(--border); background: var(--bg); color: #94a3b8; }
     .reason-tag.warn { border-color: rgba(245,158,11,0.3); color: #fbbf24; background: rgba(245,158,11,0.05); }
-    .reason-tag.good { border-color: rgba(34,197,94,0.3); color: #4ade80; background: rgba(34,197,94,0.05); }
+    .reason-tag.good { border-color: rgba(34,197,94,0.3);  color: #4ade80; background: rgba(34,197,94,0.05); }
 
-    /* History */
+    /* ── History ── */
     .history-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
     .history-head h3 { font-size: 0.75rem; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
     .history-list { display: flex; flex-direction: column; gap: 8px; }
-    .history-item {
-      display: flex; align-items: center; gap: 14px;
-      padding: 12px 16px;
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: 10px; transition: border-color 0.2s;
-    }
+    .history-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; transition: border-color 0.2s; }
     .history-item:hover { border-color: #2a3f55; }
     .h-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
     .h-dot.real { background: var(--real); box-shadow: 0 0 6px var(--real); }
     .h-dot.fake { background: var(--fake); box-shadow: 0 0 6px var(--fake); }
-    .h-source {
-      font-size: 0.68rem; font-family: 'DM Mono', monospace;
-      color: var(--accent); flex-shrink: 0;
-      background: rgba(59,130,246,0.08);
-      padding: 2px 8px; border-radius: 4px;
-    }
+    .h-source { font-size: 0.68rem; font-family: 'DM Mono', monospace; color: var(--accent); flex-shrink: 0; background: rgba(59,130,246,0.08); padding: 2px 8px; border-radius: 4px; }
     .h-text { flex: 1; font-size: 0.82rem; font-family: 'DM Mono', monospace; color: #64748b; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .h-conf { font-size: 0.75rem; font-family: 'DM Mono', monospace; color: var(--muted); flex-shrink: 0; }
+    .h-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .h-cred { font-size: 0.7rem; font-family: 'DM Mono', monospace; padding: 2px 8px; border-radius: 6px; }
+    .h-conf { font-size: 0.75rem; font-family: 'DM Mono', monospace; color: var(--muted); }
     .empty-state { text-align: center; padding: 24px; color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.82rem; }
 
-    .spinner {
-      display: inline-block; width: 16px; height: 16px;
-      border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
-      border-radius: 50%; animation: spin 0.7s linear infinite;
-      vertical-align: middle; margin-right: 8px;
-    }
+    .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
     @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
     .fade-up { animation: fadeUp 0.4s ease forwards; }
@@ -331,14 +262,11 @@
   <!-- Input Card -->
   <div class="card">
     <div class="card-label">// input method</div>
-
-    <!-- Tabs -->
     <div class="tabs">
       <button class="tab active" onclick="switchTab('text')">📝 Paste Text</button>
       <button class="tab" onclick="switchTab('url')">🔗 Analyze URL</button>
     </div>
 
-    <!-- Text Panel -->
     <div class="panel active" id="textPanel">
       <textarea id="newsInput" placeholder="Enter a news headline or article text..."></textarea>
       <div class="btn-row">
@@ -347,16 +275,12 @@
       </div>
     </div>
 
-    <!-- URL Panel -->
     <div class="panel" id="urlPanel">
       <div class="url-input-wrap">
         <span class="url-icon">🌐</span>
-        <input class="url-input" id="urlInput" type="url"
-          placeholder="https://example.com/news-article"/>
+        <input class="url-input" id="urlInput" type="url" placeholder="https://example.com/news-article"/>
       </div>
       <div class="url-hint">// paste any news article URL — we'll scrape and analyze it automatically</div>
-
-      <!-- Scrape preview (shown after scraping) -->
       <div class="scrape-preview" id="scrapePreview">
         <div class="scrape-meta">
           <span class="scrape-domain" id="scrapeDomain"></span>
@@ -364,17 +288,15 @@
         </div>
         <div class="scrape-title" id="scrapeTitle"></div>
         <div class="scrape-chars" id="scrapeChars"></div>
-        <div class="scrape-desc" id="scrapeDesc"></div>
-        <div class="mbfc-row" id="mbfcRow"></div>
-        <div class="mbfc-credit" id="mbfcCredit"></div>
+        <div class="scrape-desc"  id="scrapeDesc"></div>
+        <div class="mbfc-row"     id="mbfcRow"></div>
+        <div class="mbfc-credit"  id="mbfcCredit"></div>
       </div>
-
       <div class="btn-row">
         <button class="btn-primary" id="analyzeUrlBtn" onclick="analyzeUrl()">Scrape & Analyze</button>
         <button class="btn-ghost" onclick="clearAll()">Clear</button>
       </div>
     </div>
-
     <div class="error-msg" id="errorMsg"></div>
   </div>
 
@@ -382,31 +304,56 @@
   <div class="card" id="resultCard">
     <div class="card-label">// analysis result</div>
 
-    <div class="result-top">
+    <!-- Verdict Row -->
+    <div class="verdict-row">
+      <!-- Gauge -->
       <div class="gauge-wrap">
-        <svg viewBox="0 0 140 80" width="140" height="80">
-          <path class="gauge-track" d="M 15,70 A 55,55 0 0,1 125,70" stroke-dasharray="173" stroke-dashoffset="0"/>
-          <path class="gauge-fill" id="gaugeFill" d="M 15,70 A 55,55 0 0,1 125,70" stroke-dasharray="173" stroke-dashoffset="173"/>
+        <svg viewBox="0 0 130 75" width="130" height="75">
+          <path class="gauge-track" d="M 12,65 A 53,53 0 0,1 118,65" stroke-dasharray="166" stroke-dashoffset="0"/>
+          <path class="gauge-fill" id="gaugeFill" d="M 12,65 A 53,53 0 0,1 118,65" stroke-dasharray="166" stroke-dashoffset="166"/>
           <g class="gauge-needle" id="gaugeNeedle">
-            <line x1="70" y1="70" x2="70" y2="24" stroke="#e2e8f0" stroke-width="2" stroke-linecap="round"/>
-            <circle cx="70" cy="70" r="5" fill="#e2e8f0"/>
+            <line x1="65" y1="65" x2="65" y2="20" stroke="#e2e8f0" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="65" cy="65" r="5" fill="#e2e8f0"/>
           </g>
         </svg>
         <div class="gauge-pct" id="gaugePct">0%</div>
-        <div class="gauge-sublabel">confidence</div>
+        <div class="gauge-sub">ML confidence</div>
       </div>
 
-      <div class="verdict-info">
+      <!-- Verdict -->
+      <div class="verdict-center">
         <div class="verdict-badge" id="verdictBadge">—</div>
         <div class="verdict-sub" id="verdictSub">—</div>
+      </div>
+
+      <!-- Overall Credibility Ring -->
+      <div class="overall-score-wrap">
+        <div class="overall-score-ring">
+          <svg viewBox="0 0 80 80" width="80" height="80">
+            <circle class="ring-track" cx="40" cy="40" r="33"/>
+            <circle class="ring-fill" id="ringFill" cx="40" cy="40" r="33"
+              stroke-dasharray="0 207" stroke-dashoffset="0"/>
+          </svg>
+          <div class="overall-score-num" id="overallNum">—</div>
+        </div>
+        <div class="overall-label">Credibility</div>
+        <div class="overall-verdict" id="overallVerdict">—</div>
       </div>
     </div>
 
     <div class="divider"></div>
 
+    <!-- Credibility Score Breakdown -->
+    <div class="section-label">// credibility score breakdown</div>
+    <div class="cred-grid" id="credGrid"></div>
+
+    <div class="divider"></div>
+
+    <!-- Highlighted Text -->
     <div class="section-label">// article with flagged words highlighted</div>
     <div class="highlighted-text" id="highlightedText"></div>
 
+    <!-- Reason Tags -->
     <div class="section-label">// detection signals</div>
     <div class="reasons-grid" id="reasonsGrid"></div>
   </div>
@@ -426,11 +373,9 @@
 
 <script>
   const API = "http://127.0.0.1:8000";
-  let activeTab = "text";
 
   // ── Tab switching ─────────────────────────────────────────────────────────
   function switchTab(tab) {
-    activeTab = tab;
     document.querySelectorAll(".tab").forEach((t, i) => {
       t.classList.toggle("active", (i === 0 && tab === "text") || (i === 1 && tab === "url"));
     });
@@ -441,16 +386,14 @@
 
   // ── Gauge ─────────────────────────────────────────────────────────────────
   function animateGauge(pct, isReal) {
-    const total  = 173;
+    const total  = 166;
     const fill   = document.getElementById("gaugeFill");
     const needle = document.getElementById("gaugeNeedle");
     const pctEl  = document.getElementById("gaugePct");
     const color  = isReal ? "#22c55e" : "#ef4444";
-
     fill.style.stroke = color;
     fill.style.strokeDashoffset = total - (pct / 100) * total;
     needle.style.transform = `rotate(${-90 + (pct / 100) * 180}deg)`;
-
     let cur = 0;
     const step = pct / 40;
     const timer = setInterval(() => {
@@ -461,7 +404,78 @@
     }, 25);
   }
 
-  // ── Highlight words ───────────────────────────────────────────────────────
+  // ── Credibility Ring ──────────────────────────────────────────────────────
+  function animateRing(score) {
+    const circumference = 2 * Math.PI * 33; // ~207
+    const ring   = document.getElementById("ringFill");
+    const numEl  = document.getElementById("overallNum");
+    const verdict = document.getElementById("overallVerdict");
+
+    const color = score >= 70 ? "#22c55e" : score >= 45 ? "#f59e0b" : "#ef4444";
+    ring.style.stroke = color;
+
+    setTimeout(() => {
+      const filled = (score / 100) * circumference;
+      ring.style.strokeDasharray = `${filled} ${circumference - filled}`;
+    }, 100);
+
+    let cur = 0;
+    const step = score / 50;
+    const timer = setInterval(() => {
+      cur = Math.min(cur + step, score);
+      numEl.textContent = Math.round(cur);
+      numEl.style.color = color;
+      if (cur >= score) clearInterval(timer);
+    }, 20);
+
+    const labels = score >= 70 ? ["Credible", "#22c55e"] : score >= 45 ? ["Questionable", "#f59e0b"] : ["Suspicious", "#ef4444"];
+    verdict.textContent  = labels[0];
+    verdict.style.color  = labels[1];
+  }
+
+  // ── Credibility Breakdown ─────────────────────────────────────────────────
+  const FACTOR_ICONS = {
+    "ML Model Score":         "🤖",
+    "Source Credibility":     "🏛️",
+    "Language Tone":          "🗣️",
+    "Emotional Manipulation": "🧠",
+    "Structural Quality":     "📐",
+    "Headline Integrity":     "📰",
+  };
+
+  function renderCredibility(credibility) {
+    const grid = document.getElementById("credGrid");
+    grid.innerHTML = credibility.factors.map(factor => {
+      const s     = factor.score;
+      const cls   = s >= 70 ? "high" : s >= 45 ? "mid" : "low";
+      const icon  = FACTOR_ICONS[factor.label] || "📊";
+      const flags = factor.flags || [];
+
+      return `
+        <div class="cred-row">
+          <div class="cred-top">
+            <span class="cred-icon">${icon}</span>
+            <span class="cred-name">${factor.label}</span>
+            <span class="cred-score-badge score-${cls}">${Math.round(s)}/100</span>
+          </div>
+          <div class="cred-bar-wrap">
+            <div class="cred-bar-fill bar-${cls}" style="width:0%" data-target="${s}%"></div>
+          </div>
+          <div class="cred-desc">${factor.description}</div>
+          ${flags.length ? `<div class="cred-flags">${flags.map(f => `<span class="cred-flag">${f}</span>`).join("")}</div>` : ""}
+        </div>
+      `;
+    }).join("");
+
+    // Animate bars after render
+    setTimeout(() => {
+      grid.querySelectorAll(".cred-bar-fill").forEach(bar => {
+        bar.style.width = bar.dataset.target;
+      });
+    }, 100);
+  }
+
+  // ── Highlight Words ───────────────────────────────────────────────────────
   function highlightText(text, highlights) {
     let result = escapeHtml(text);
     if (highlights && highlights.length) {
@@ -473,22 +487,19 @@
     }
     return result;
   }
-
   function escapeHtml(t) {
     return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
   }
 
-  // ── Analyze text ──────────────────────────────────────────────────────────
+  // ── Analyze Text ─────────────────────────────────────────────────────────
   async function analyzeText() {
     const text = document.getElementById("newsInput").value.trim();
     const err  = document.getElementById("errorMsg");
     err.style.display = "none";
     if (!text) { err.textContent = "Please enter some text."; err.style.display = "block"; return; }
-
     const btn = document.getElementById("analyzeTextBtn");
     btn.innerHTML = '<span class="spinner"></span>Analyzing...';
     btn.disabled  = true;
-
     try {
       const res  = await fetch(`${API}/predict`, {
         method: "POST", headers: { "Content-Type": "application/json" },
@@ -513,14 +524,11 @@
     const err = document.getElementById("errorMsg");
     err.style.display = "none";
     document.getElementById("scrapePreview").style.display = "none";
-
     if (!url) { err.textContent = "Please enter a URL."; err.style.display = "block"; return; }
     if (!url.startsWith("http")) { err.textContent = "URL must start with http:// or https://"; err.style.display = "block"; return; }
-
     const btn = document.getElementById("analyzeUrlBtn");
     btn.innerHTML = '<span class="spinner"></span>Scraping & Analyzing...';
     btn.disabled  = true;
-
     try {
       const res  = await fetch(`${API}/predict-url`, {
         method: "POST", headers: { "Content-Type": "application/json" },
@@ -528,8 +536,6 @@
       });
       const data = await res.json();
       if (data.error) { err.textContent = data.error; err.style.display = "block"; return; }
-
-      // Show scrape preview
       showScrapePreview(data);
       showResult(data, data.scraped_text || "");
       loadHistory();
@@ -542,58 +548,35 @@
     }
   }
 
+  // ── Scrape Preview ────────────────────────────────────────────────────────
   function showScrapePreview(data) {
-    const preview = document.getElementById("scrapePreview");
-    preview.style.display = "block";
-
+    document.getElementById("scrapePreview").style.display = "block";
     document.getElementById("scrapeDomain").textContent = data.scraped_domain || "";
-
     const trust = data.domain_trust || {};
     const badge = document.getElementById("trustBadge");
     badge.textContent = trust.label || "Unknown Source";
     badge.className   = "trust-badge " + (
-      trust.trust === "high"    ? "trust-high"    :
-      trust.trust === "low"     ? "trust-low"     :
-      trust.trust === "satire"  ? "trust-satire"  : "trust-neutral"
+      trust.trust === "high"   ? "trust-high"    :
+      trust.trust === "low"    ? "trust-low"      :
+      trust.trust === "satire" ? "trust-satire"   : "trust-neutral"
     );
-
-    document.getElementById("scrapeTitle").textContent =
-      data.scraped_title || "Title not found";
-    document.getElementById("scrapeChars").textContent =
-      `${data.scraped_chars || 0} characters extracted`;
-    document.getElementById("scrapeDesc").textContent =
-      trust.description || "";
-
-    // MBFC ratings + data source
-    const mbfc       = trust.mbfc;
-    const dataSource = trust.source;
-    const mbfcRow    = document.getElementById("mbfcRow");
-    const mbfcCredit = document.getElementById("mbfcCredit");
-
+    document.getElementById("scrapeTitle").textContent = data.scraped_title || "Title not found";
+    document.getElementById("scrapeChars").textContent = `${data.scraped_chars || 0} characters extracted`;
+    document.getElementById("scrapeDesc").textContent  = trust.description || "";
+    const mbfc = trust.mbfc;
+    const src  = trust.source;
+    const sourceLabels = { "hardcoded": "📋 Curated from MBFC", "opensources": "🌐 OpenSources Dataset", "cache": "⚡ Cached Result", "unknown": "❓ Not in any database" };
     let tags = "";
     if (mbfc) {
       tags += `<span class="mbfc-tag">Bias: ${mbfc.bias}</span>`;
       tags += `<span class="mbfc-tag">Factual: ${mbfc.factual}</span>`;
     }
-
-    // Show where the rating came from
-    const sourceLabels = {
-      "hardcoded":   "📋 Curated from MBFC",
-      "opensources": "🌐 OpenSources Dataset (825 sources)",
-      "cache":       "⚡ Cached Result",
-      "unknown":     "❓ Not in any database"
-    };
-    if (dataSource) {
-      tags += `<span class="mbfc-tag" style="color:#475569">${sourceLabels[dataSource] || dataSource}</span>`;
-    }
-
-    mbfcRow.innerHTML = tags;
-    mbfcCredit.textContent = mbfc || dataSource === "opensources"
-      ? "// ratings curated from mediabiasfactcheck.com & opensources dataset"
-      : "";
+    if (src) tags += `<span class="mbfc-tag" style="color:#475569">${sourceLabels[src] || src}</span>`;
+    document.getElementById("mbfcRow").innerHTML   = tags;
+    document.getElementById("mbfcCredit").textContent = (mbfc || src === "opensources") ? "// ratings curated from mediabiasfactcheck.com & opensources dataset" : "";
   }
 
-  // ── Show result ───────────────────────────────────────────────────────────
+  // ── Show Full Result ──────────────────────────────────────────────────────
   function showResult(data, originalText) {
     const card = document.getElementById("resultCard");
     card.style.display = "block";
@@ -604,21 +587,35 @@
     const isReal = data.label === "Real";
     animateGauge(data.confidence, isReal);
 
-    const badge = document.getElementById("verdictBadge");
-    badge.textContent = isReal ? "✅ Real News" : "🚨 Fake News";
-    badge.className   = "verdict-badge " + (isReal ? "badge-real" : "badge-fake");
+    // Credibility
+    const cred = data.credibility || {};
+    const overall = cred.overall || 0;
+    animateRing(overall);
+
+    // Verdict badge — use credibility verdict for accuracy
+    const badge  = document.getElementById("verdictBadge");
+    const vc     = cred.verdict_color || (isReal ? "real" : "fake");
+    const vLabel = cred.verdict || (isReal ? "Likely Credible" : "Likely Misinformation");
+    const vIcon  = vc === "real" ? "✅" : vc === "warn" ? "⚠️" : "🚨";
+    badge.textContent = `${vIcon} ${vLabel}`;
+    badge.className   = `verdict-badge badge-${vc}`;
 
     document.getElementById("verdictSub").textContent =
-      `Confidence: ${data.confidence}% · ${isReal ? "No deception detected" : "Deceptive patterns found"}`;
+      `ML: ${data.label} (${data.confidence}%) · Credibility Score: ${overall}/100`;
 
+    // Credibility breakdown
+    if (cred.factors) renderCredibility(cred);
+
+    // Highlighted text
     document.getElementById("highlightedText").innerHTML =
       highlightText(originalText, data.highlights);
 
+    // Reason tags
     const grid = document.getElementById("reasonsGrid");
-    grid.innerHTML = data.reasons.map(r => {
+    grid.innerHTML = (data.reasons || []).map(r => {
       const isGood = r.toLowerCase().includes("neutral") || r.toLowerCase().includes("credible");
-      const cls    = isGood ? "good" : (r.includes("No specific") ? "" : "warn");
-      const icon   = isGood ? "✓" : (r.includes("No specific") ? "·" : "⚑");
+      const cls    = isGood ? "good" : r.includes("No specific") ? "" : "warn";
+      const icon   = isGood ? "✓" : r.includes("No specific") ? "·" : "⚑";
       return `<div class="reason-tag ${cls}">${icon} ${r}</div>`;
     }).join("");
 
@@ -631,23 +628,19 @@
       const res  = await fetch(`${API}/history`);
       const data = await res.json();
       const list = document.getElementById("historyList");
-
-      if (!data.length) {
-        list.innerHTML = '<div class="empty-state">No analyses yet.</div>';
-        return;
-      }
-
+      if (!data.length) { list.innerHTML = '<div class="empty-state">No analyses yet.</div>'; return; }
       list.innerHTML = data.map(h => `
         <div class="history-item">
           <div class="h-dot ${h.label === 'Real' ? 'real' : 'fake'}"></div>
           <span class="h-source">${h.source === 'url' ? '🔗 url' : '📝 text'}</span>
           <div class="h-text">${escapeHtml(h.url || h.text || '')}</div>
-          <div class="h-conf">${h.label} · ${h.confidence}%</div>
+          <div class="h-right">
+            <span class="h-conf">${h.label} · ${h.confidence}%</span>
+          </div>
         </div>
       `).join("");
     } catch {
-      document.getElementById("historyList").innerHTML =
-        '<div class="empty-state">Backend not connected.</div>';
+      document.getElementById("historyList").innerHTML = '<div class="empty-state">Backend not connected.</div>';
     }
   }
 
@@ -659,9 +652,9 @@
   function clearAll() {
     document.getElementById("newsInput").value  = "";
     document.getElementById("urlInput").value   = "";
-    document.getElementById("resultCard").style.display   = "none";
+    document.getElementById("resultCard").style.display    = "none";
     document.getElementById("scrapePreview").style.display = "none";
-    document.getElementById("errorMsg").style.display     = "none";
+    document.getElementById("errorMsg").style.display      = "none";
   }
 
   loadHistory();
