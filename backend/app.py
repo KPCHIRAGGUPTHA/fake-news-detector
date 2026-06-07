@@ -1,19 +1,17 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import sqlite3
 import os
 import sys
 
-# Add parent directory so backend can import predict.py
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from backend.predict import predict
+from backend.scraper import scrape_article
 
 app = FastAPI(title="Fake News Detector API")
 
-# ── CORS ──────────────────────────────────────────────────────────────────────
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -21,7 +19,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ── Database Setup ────────────────────────────────────────────────────────────
 DB_PATH = "backend/history.db"
 
 def init_db():
@@ -29,6 +26,8 @@ def init_db():
     conn.execute("""
         CREATE TABLE IF NOT EXISTS history (
             id         INTEGER PRIMARY KEY AUTOINCREMENT,
+            source     TEXT DEFAULT 'text',
+            url        TEXT DEFAULT '',
             text       TEXT,
             label      TEXT,
             confidence REAL,
@@ -41,11 +40,12 @@ def init_db():
 
 init_db()
 
-# ── Request Model ─────────────────────────────────────────────────────────────
 class NewsInput(BaseModel):
     text: str
 
-# ── Routes ────────────────────────────────────────────────────────────────────
+class UrlInput(BaseModel):
+    url: str
+
 @app.get("/")
 def root():
     return FileResponse("frontend/index.html")
@@ -54,36 +54,38 @@ def root():
 def predict_news(input: NewsInput):
     if not input.text.strip():
         return {"error": "Please enter some text."}
-
     result = predict(input.text)
+    _save_history("text", "", input.text, result)
+    return result
 
-    # Save to DB
-    conn = sqlite3.connect(DB_PATH)
-    conn.execute(
-        "INSERT INTO history (text, label, confidence, reasons) VALUES (?, ?, ?, ?)",
-        (input.text[:500], result["label"], result["confidence"], " | ".join(result["reasons"]))
-    )
-    conn.commit()
-    conn.close()
-
+@app.post("/predict-url")
+def predict_url(input: UrlInput):
+    if not input.url.strip():
+        return {"error": "Please enter a URL."}
+    scraped = scrape_article(input.url)
+    if "error" in scraped:
+        return {"error": scraped["error"]}
+    result = predict(scraped["text"])
+    result["scraped_title"]  = scraped.get("title", "")
+    result["scraped_domain"] = scraped.get("domain", "")
+    result["scraped_chars"]  = scraped.get("chars", 0)
+    result["domain_trust"]   = scraped.get("trust", {})
+    result["scraped_text"]   = scraped["text"]
+    _save_history("url", input.url, scraped["text"], result)
     return result
 
 @app.get("/history")
 def get_history():
     conn = sqlite3.connect(DB_PATH)
     rows = conn.execute(
-        "SELECT id, text, label, confidence, reasons, timestamp FROM history ORDER BY id DESC LIMIT 20"
+        "SELECT id, source, url, text, label, confidence, reasons, timestamp FROM history ORDER BY id DESC LIMIT 20"
     ).fetchall()
     conn.close()
-
     return [
         {
-            "id":         r[0],
-            "text":       r[1],
-            "label":      r[2],
-            "confidence": r[3],
-            "reasons":    r[4],
-            "timestamp":  r[5]
+            "id": r[0], "source": r[1], "url": r[2],
+            "text": r[3], "label": r[4],
+            "confidence": r[5], "reasons": r[6], "timestamp": r[7]
         }
         for r in rows
     ]
@@ -95,3 +97,12 @@ def clear_history():
     conn.commit()
     conn.close()
     return {"message": "History cleared."}
+
+def _save_history(source, url, text, result):
+    conn = sqlite3.connect(DB_PATH)
+    conn.execute(
+        "INSERT INTO history (source, url, text, label, confidence, reasons) VALUES (?,?,?,?,?,?)",
+        (source, url, text[:500], result["label"], result["confidence"], " | ".join(result["reasons"]))
+    )
+    conn.commit()
+    conn.close()
